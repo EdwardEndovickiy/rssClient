@@ -1,0 +1,6 @@
+<md-card class="card-feed-entry">
+  <md-card-title>{{feed.title}}</md-card-title>
+  <md-card-subtitle>{{feed.link}} - {{feed.pubDate | date:'dd-MM-yyyy'}}</md-card-subtitle>
+  <md-card-content>{{feed.description | stripHtmlTags}}</md-card-content>
+  <button (click)="viewFeed(feed.link)">View</button>
+</md-card>
