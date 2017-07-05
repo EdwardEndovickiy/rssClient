@@ -1,0 +1,16 @@
+button.mat-button.menu {
+  margin-left: 36vw;
+}
+button.mat-mini-fab {
+  margin: 5px;
+}
+input {
+  width: 20vw;
+}
+button.delete {
+  float: right;
+}
+md-tab-group.group {
+  background-color: #fff;
+  height: 84vh;
+}

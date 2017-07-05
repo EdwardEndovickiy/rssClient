@@ -1,14 +1,42 @@
 <!--The whole content below can be removed with the new code.-->
 <md-toolbar color="primary">
   <span>RSS</span>
-  <span class="example-spacer"></span>
-  <span class="pointer-cursor">
-    <md-icon (click)="refreshFeed()">refresh</md-icon>
+  <span></span>
+  <span>
+    <button md-mini-fab><md-icon (click)="refreshFeed()">refresh</md-icon></button>
   </span>
-  <button md-button [mdMenuTriggerFor]="appMenu"><md-icon>menu</md-icon> Menu</button>
+  <span>{{countFeed()}} new feeds</span>
+  <span>{{link}}</span>
+  <button md-button class="menu" [mdMenuTriggerFor]="appMenu"><md-icon>menu</md-icon> Links</button>
+  <md-toolbar-row>
+    <md-input-container>
+      <input mdInput placeholder="Add RSS name" [(ngModel)]="name" required>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput placeholder="Add RSS link" [(ngModel)]="url" required>
+    </md-input-container>
+    <button md-button *ngIf="name != '' && url != ''" (click)="addLink(name,url)">Add </button>
+  </md-toolbar-row>
 </md-toolbar>
+
 <md-menu #appMenu="mdMenu">
-  <button md-menu-item> Add RSS </button>
-  <button md-menu-item> View </button>
+  <button md-menu-item (click)="viewStat()"> Statistics</button>
+  <button md-menu-item *ngFor="let link of links" (click)="goToLink(link.url)">"{{link.name}}"</button>
 </md-menu>
-<app-feed-card *ngFor="let feed of feeds" [feed]="feed"></app-feed-card>
+
+<md-tab-group class="group">
+
+  <md-tab label="Feed">
+    <md-card *ngIf="feedUrl == ''">
+      <md-card-title>Choose the link</md-card-title>
+    </md-card>
+    <app-feed-card *ngFor="let feed of feeds" [feed]="feed"></app-feed-card>
+  </md-tab>
+
+  <md-tab label="Settings">
+    <md-card *ngFor="let link of links">
+      <span>{{link.name}}</span><button md-button class="delete" (click)="delLink(link)"><md-icon>delete</md-icon></button>
+    </md-card>
+  </md-tab>
+
+</md-tab-group>

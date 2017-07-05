@@ -1,4 +1,5 @@
 export interface FeedEntry {
+  more: boolean,
   title: string,
   link: string,
   guid: string,
@@ -6,6 +7,7 @@ export interface FeedEntry {
   categories: Array<any>,
   author: string,
   thumpbnail: string,
-  description: string;
-  content: string
+  description: string,
+  content: string,
+  view: boolean
 }

@@ -2,9 +2,6 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
-  padding: 2em 20vw;
+  padding: 0em 17vw;
   background: lightgray;
 }
-button.mat-button {
-    margin-left: 41vw;
-  }
