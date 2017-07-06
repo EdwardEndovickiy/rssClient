@@ -6,17 +6,17 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./feed-card.component.css']
 })
 export class FeedCardComponent implements OnInit {
+    @Input() feed: any;
     private alphabet = ['a','b','c','d','e','f','g','h','i','g','k','l','m','n',
                         'o','p','q','r','s','t','u','v','w','x','y','z'];
-
     private type = 'pie';
     private data = {
       labels: this.alphabet,
       datasets: [
         {
-          label: "My First dataset",
-          data: [],
-          backgroundColor: [
+            label: "My First dataset",
+            data: [],
+            backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -44,6 +44,7 @@ export class FeedCardComponent implements OnInit {
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
             ],
+            borderWidth: 1
         }
       ]
     };
@@ -51,8 +52,6 @@ export class FeedCardComponent implements OnInit {
       responsive: true,
       maintainAspectRatio: false
     };
-
-    @Input() feed: any;
 
     ngOnInit() {
     }
@@ -76,12 +75,15 @@ export class FeedCardComponent implements OnInit {
             for (let char of description){
                 this.alphabet[index] == char ? count++ : count;
             }
+            this.pushDataset(count);
+        }
+    }
 
-            let datasets = this.data.datasets;
+    pushDataset(count: number){
+        let datasets = this.data.datasets;
             for (let dataset of datasets){
                 dataset.data.push(count);
             }
-        }
     }
 
 /*    countCharToPercent(length: number, count: number){

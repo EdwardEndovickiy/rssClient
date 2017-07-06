@@ -36,18 +36,33 @@ export class AppComponent implements OnInit {
 
   private countLink(){
     let countLink: number = this.links.length;
+
     return countLink;
+  }
+
+  private countAuthors(){
+    let count: number = 0;
+    if (this.feeds){
+      count = 1;
+      for (let feedI of this.feeds){
+        for (let feedJ of this.feeds){
+          feedI.author != feedJ.author ? count++ : count;
+        }
+      }
+    }
+    return count;
   }
 
   private viewStat(){
     let countFeed;
-    let countLink = this.countLink();;
+    let countLink = this.countLink();
+    let countAuthor: number;
     if (this.feedUrl == ''){
       countFeed = 'Not selected';
     } else {
       countFeed = this.countFeed() + ' feeds';
     }
-    alert('On this channel '+ countFeed + '\n\n' + 'In total: ' + countLink + ' channel');
+    alert('On this channel '+ countFeed + '\n' + this.countAuthors() + ' authors\n\nIn total: ' + countLink + ' channel\n' );
   }
 
   private addLink(){

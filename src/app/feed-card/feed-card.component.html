@@ -1,6 +1,6 @@
 <md-card class="card-feed-entry">
   <md-card-title>{{feed.title}}</md-card-title>
-  <md-card-subtitle>{{feed.pubDate | date:'dd-MM-yyyy HH:MM'}}</md-card-subtitle>
+  <md-card-subtitle>{{feed.author}}<br>{{feed.pubDate | date:'dd-MM-yyyy HH:MM'}}</md-card-subtitle>
   <md-card-content *ngIf="feed.more">{{feed.description | stripHtmlTags}}</md-card-content>
   <button (click)="viewFeed(feed)">{{feed.view ? 'Watched' : 'View full'}}</button>
   <button (click)="viewFeedOriginal(feed)">Watch original</button>
