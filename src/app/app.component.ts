@@ -49,13 +49,19 @@ export class AppComponent implements OnInit {
     }
     alert('On this channel '+ countFeed + '\n\n' + 'In total: ' + countLink + ' channel');
   }
+
   private addLink(){
     this.links.push(new Link(this.name, this.url));
     this.name = this.url = '';
   }
+
   private delLink(link: any){
     let index: number = this.links.indexOf(link);
     this.links.splice(index, 1);
+    if (link.url == this.feedUrl){
+      this.feedUrl = '';
+      this.refreshFeed();
+    }
   }
 
   private goToLink(link: string){

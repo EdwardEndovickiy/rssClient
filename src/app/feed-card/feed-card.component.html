@@ -1,7 +1,9 @@
-<md-card class="card-feed-entry" *ngIf="(feed.more && more) || (!feed.more && !more) ">
+<md-card class="card-feed-entry">
   <md-card-title>{{feed.title}}</md-card-title>
   <md-card-subtitle>{{feed.pubDate | date:'dd-MM-yyyy HH:MM'}}</md-card-subtitle>
   <md-card-content *ngIf="feed.more">{{feed.description | stripHtmlTags}}</md-card-content>
   <button (click)="viewFeed(feed)">{{feed.view ? 'Watched' : 'View full'}}</button>
   <button (click)="viewFeedOriginal(feed)">Watch original</button>
+  <chart *ngIf="feed.more" [type]="type" [data]="data" [options]="options"></chart>
+  <div *ngIf="feed.more"><span *ngFor="let res of result">{{res}} %<br></span></div>
 </md-card>
