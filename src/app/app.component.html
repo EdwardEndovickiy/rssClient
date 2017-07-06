@@ -6,6 +6,7 @@
     <button md-mini-fab><md-icon (click)="refreshFeed()">refresh</md-icon></button>
   </span>
   <span>{{countFeed()}} new feeds</span>
+  <span class="only-news">Only new feeds</span><button md-mini-fab (click)="onOnlyNews()">{{onlyNews ? 'on' :'off'}}</button>
   <span>{{link}}</span>
   <button md-button class="menu" [mdMenuTriggerFor]="appMenu"><md-icon>menu</md-icon> Links</button>
   <md-toolbar-row>
@@ -30,7 +31,7 @@
     <md-card *ngIf="feedUrl == ''">
       <md-card-title>Choose the link</md-card-title>
     </md-card>
-    <app-feed-card *ngFor="let feed of feeds" [feed]="feed"></app-feed-card>
+    <app-feed-card *ngFor="let feed of feeds" [feed]="feed" [onlyNews]="onlyNews"></app-feed-card>
   </md-tab>
 
   <md-tab label="Settings">

@@ -7,6 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FeedCardComponent implements OnInit {
     @Input() feed: any;
+    @Input() onlyNews: boolean;
+
+    private watchOnlyNew: boolean = true;
     private alphabet = ['a','b','c','d','e','f','g','h','i','g','k','l','m','n',
                         'o','p','q','r','s','t','u','v','w','x','y','z'];
     private type = 'pie';
@@ -56,9 +59,17 @@ export class FeedCardComponent implements OnInit {
     ngOnInit() {
     }
 
+    onOnlyNew(){
+        this.watchOnlyNew = !this.watchOnlyNew;
+    }
     viewFeed(feed: any){
         feed.view = true;
         feed.more = !feed.more;
+        let datasets = this.data.datasets;
+
+        for (let dataset of datasets){
+            dataset.data = [];
+        }
         this.countChar(feed.description);
     }
     viewFeedOriginal(feed: any){

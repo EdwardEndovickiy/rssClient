@@ -1,5 +1,5 @@
 button.mat-button.menu {
-  margin-left: 36vw;
+  margin-left: 22vw;
 }
 button.mat-mini-fab {
   margin: 5px;
@@ -13,4 +13,9 @@ button.delete {
 md-tab-group.group {
   background-color: #fff;
   height: 84vh;
+}
+
+span.only-news {
+  margin-left: 62px;
+  margin-bottom: -2px;
 }

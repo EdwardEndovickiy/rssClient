@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FeedServiceService } from './feed-service.service';
 import { Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -19,13 +19,16 @@ export class AppComponent implements OnInit {
   ];
   private name: string = '';
   private url: string = '';
+  private onlyNews: boolean = false;
 
   constructor(private feedService: FeedServiceService) {}
 
   ngOnInit(){
     this.refreshFeed();
   }
-
+  private onOnlyNews(){
+    this.onlyNews = !this.onlyNews;
+  }
   private countFeed() {
     let count: number = 0;
     for (let index in this.feeds){
