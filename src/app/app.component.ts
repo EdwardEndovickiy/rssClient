@@ -2,6 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { FeedServiceService } from './feed-service.service';
 import { Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import {TranslateService} from '@ngx-translate/core';
 
 import { Link } from './link';
 
@@ -20,14 +21,22 @@ export class AppComponent implements OnInit {
   private name: string = '';
   private url: string = '';
   private onlyNews: boolean = false;
+  private lang: string = 'en';
 
-  constructor(private feedService: FeedServiceService) {}
+  constructor(private feedService: FeedServiceService,private translate: TranslateService) {
+    translate.setDefaultLang(this.lang);
+    translate.use(this.lang);
+  }
 
   ngOnInit(){
     this.refreshFeed();
   }
   private onOnlyNews(){
     this.onlyNews = !this.onlyNews;
+  }
+  private langChoose(){
+    this.lang == 'en' ? this.lang = 'ru' : this.lang = 'en';
+    this.translate.use(this.lang);
   }
   private countFeed() {
     let count: number = 0;
@@ -65,7 +74,7 @@ export class AppComponent implements OnInit {
     } else {
       countFeed = this.countFeed() + ' feeds';
     }
-    alert('On this channel '+ countFeed + '\n' + this.countAuthors() + ' authors\n\nIn total: ' + countLink + ' channel\n' );
+    alert('On this channel '+ countFeed + '\n' + this.countAuthors() + ' authors\n\nIn total: ' + countLink + ' channel\n');
   }
 
   private addLink(){

@@ -1,40 +1,41 @@
 <!--The whole content below can be removed with the new code.-->
 <md-toolbar color="primary">
+<button md-mini-fab (click)="langChoose()">{{'Lan' | translate}}</button>
   <span>RSS</span>
   <span></span>
   <span>
     <button md-mini-fab><md-icon (click)="refreshFeed()">refresh</md-icon></button>
   </span>
-  <span>{{countFeed()}} new feeds</span>
-  <span class="only-news">Only new feeds</span><button md-mini-fab (click)="onOnlyNews()">{{onlyNews ? 'on' :'off'}}</button>
+  <span>{{countFeed()}} {{ 'New_feeds' | translate }}</span>
+  <span class="only-news">{{ 'Only_new' | translate }}</span><button md-mini-fab (click)="onOnlyNews()">{{onlyNews ? 'On' : 'Off' | translate}}</button>
   <span>{{link}}</span>
-  <button md-button class="menu" [mdMenuTriggerFor]="appMenu"><md-icon>menu</md-icon> Links</button>
+  <button md-button class="menu" [mdMenuTriggerFor]="appMenu"><md-icon>menu</md-icon> {{ 'Links' | translate }}</button>
   <md-toolbar-row>
     <md-input-container>
-      <input mdInput placeholder="Add RSS name" [(ngModel)]="name" required>
+      <input mdInput placeholder="{{ 'Add_name' | translate }}" [(ngModel)]="name" required>
     </md-input-container>
     <md-input-container>
-      <input mdInput placeholder="Add RSS link" [(ngModel)]="url" required>
+      <input mdInput placeholder="{{ 'Add_link' | translate }}" [(ngModel)]="url" required>
     </md-input-container>
-    <button md-button *ngIf="name != '' && url != ''" (click)="addLink(name,url)">Add </button>
+    <button md-button *ngIf="name != '' && url != ''" (click)="addLink(name,url)">{{ 'Btn_add' | translate }}</button>
   </md-toolbar-row>
 </md-toolbar>
 
 <md-menu #appMenu="mdMenu">
-  <button md-menu-item (click)="viewStat()"> Statistics</button>
+  <button md-menu-item (click)="viewStat()"> {{ 'Statistics' | translate }}</button>
   <button md-menu-item *ngFor="let link of links" (click)="goToLink(link.url)">"{{link.name}}"</button>
 </md-menu>
 
 <md-tab-group class="group">
 
-  <md-tab label="Feed">
+  <md-tab label="{{ 'Feeds' | translate }}">
     <md-card *ngIf="feedUrl == ''">
-      <md-card-title>Choose the link</md-card-title>
+      <md-card-title>{{ 'Choose' | translate }}</md-card-title>
     </md-card>
-    <app-feed-card *ngFor="let feed of feeds" [feed]="feed" [onlyNews]="onlyNews"></app-feed-card>
+    <app-feed-card *ngFor="let feed of feeds" [feed]="feed" [onlyNews]="onlyNews" [(lang)]="lang"></app-feed-card>
   </md-tab>
 
-  <md-tab label="Settings">
+  <md-tab label="{{ 'Settings' | translate }}">
     <md-card *ngFor="let link of links">
       <span>{{link.name}}</span><button md-button class="delete" (click)="delLink(link)"><md-icon>delete</md-icon></button>
     </md-card>

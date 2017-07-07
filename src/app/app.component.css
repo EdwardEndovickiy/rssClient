@@ -1,5 +1,6 @@
 button.mat-button.menu {
-  margin-left: 22vw;
+  right: 20vw;
+  position: fixed;
 }
 button.mat-mini-fab {
   margin: 5px;

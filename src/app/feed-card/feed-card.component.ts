@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-feed-card',
@@ -8,7 +9,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class FeedCardComponent implements OnInit {
     @Input() feed: any;
     @Input() onlyNews: boolean;
+    @Input() lang: string = 'en';
 
+    private copy = [];
     private watchOnlyNew: boolean = true;
     private alphabet = ['a','b','c','d','e','f','g','h','i','g','k','l','m','n',
                         'o','p','q','r','s','t','u','v','w','x','y','z'];
@@ -17,7 +20,7 @@ export class FeedCardComponent implements OnInit {
       labels: this.alphabet,
       datasets: [
         {
-            label: "My First dataset",
+            label: "Char",
             data: [],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -55,14 +58,17 @@ export class FeedCardComponent implements OnInit {
       responsive: true,
       maintainAspectRatio: false
     };
+    constructor(private translate: TranslateService) {
+        translate.setDefaultLang(this.lang);
+        translate.use(this.lang);
+      }
 
     ngOnInit() {
     }
 
-    onOnlyNew(){
-        this.watchOnlyNew = !this.watchOnlyNew;
-    }
     viewFeed(feed: any){
+        /*this.copy = Object.assign({}, this.feed);
+        console.log(this.copy);*/
         feed.view = true;
         feed.more = !feed.more;
         let datasets = this.data.datasets;
@@ -92,13 +98,8 @@ export class FeedCardComponent implements OnInit {
 
     pushDataset(count: number){
         let datasets = this.data.datasets;
-            for (let dataset of datasets){
-                dataset.data.push(count);
-            }
+        for (let dataset of datasets){
+            dataset.data.push(count);
+        }
     }
-
-/*    countCharToPercent(length: number, count: number){
-        let result = count / length * 100;
-        return result;
-    }*/
 }

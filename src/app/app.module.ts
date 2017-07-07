@@ -4,7 +4,7 @@ import { BrowserAnimationsModule }     from '@angular/platform-browser/animation
 import { MdButtonModule, MdCardModule, MdMenuModule,
          MdToolbarModule, MdIconModule,MdTabsModule,
          MdSidenavModule,MdInputModule} from '@angular/material';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -12,6 +12,9 @@ import { FeedCardComponent } from './feed-card/feed-card.component';
 import { StripHtmlTagsPipe } from './pipe/strip-html-tags.pipe';
 import { FeedServiceService } from './feed-service.service';
 import { ChartModule } from 'angular2-chartjs';
+
+import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 
 @NgModule({
   declarations: [
@@ -32,7 +35,14 @@ import { ChartModule } from 'angular2-chartjs';
     MdIconModule,
     MdSidenavModule,
     MdInputModule,
-    MdTabsModule
+    MdTabsModule,
+    TranslateModule.forRoot({
+        loader: {
+            provide: TranslateLoader,
+            useFactory: (http: Http) => new TranslateHttpLoader(http),
+            deps: [Http]
+        }
+    })
   ],
   providers: [FeedServiceService],
   bootstrap: [AppComponent]
