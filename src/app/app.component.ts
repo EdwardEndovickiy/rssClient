@@ -21,15 +21,38 @@ export class AppComponent implements OnInit {
   private name: string = '';
   private url: string = '';
   private onlyNews: boolean = false;
-  private lang: string = 'en';
+  private lang: string;
 
   constructor(private feedService: FeedServiceService,private translate: TranslateService) {
+
+    console.log(localStorage.getItem("feeds"));
+    console.log(localStorage.getItem('links'));
+
+    if (localStorage.getItem('lang')){
+      this.lang = localStorage.getItem('lang')
+    } else {
+      this.lang = 'en'};
+
+    if (localStorage.getItem('links')){
+      let linksOld = JSON.parse(localStorage.getItem('links'));
+      console.log(linksOld);
+      // this.links = Object.assign({}, linksOld);
+    }
+
+    /*let feeds = JSON.stringify(localStorage.getItem('feeds'));*/
+
+    if (localStorage.getItem('feeds')){
+      let feedsOld = Object.assign({}, localStorage.getItem('feeds'))
+      console.log(feedsOld);
+    }
+
     translate.setDefaultLang(this.lang);
     translate.use(this.lang);
   }
 
   ngOnInit(){
-    this.refreshFeed();
+    // this.copy = Object.assign({}, this.feed);
+
   }
   private onOnlyNews(){
     this.onlyNews = !this.onlyNews;
@@ -37,6 +60,7 @@ export class AppComponent implements OnInit {
   private langChoose(){
     this.lang == 'en' ? this.lang = 'ru' : this.lang = 'en';
     this.translate.use(this.lang);
+    localStorage.setItem('lang', this.lang);
   }
   private countFeed() {
     let count: number = 0;
@@ -80,6 +104,7 @@ export class AppComponent implements OnInit {
   private addLink(){
     this.links.push(new Link(this.name, this.url));
     this.name = this.url = '';
+    localStorage.setItem("links",JSON.stringify(this.links));
   }
 
   private delLink(link: any){
@@ -101,6 +126,8 @@ export class AppComponent implements OnInit {
         .subscribe(
                    feed => this.feeds = feed.items,
                    error => console.log(error));
+    localStorage.setItem("feeds", JSON.stringify(this.feeds));
+    console.log(localStorage.getItem("feeds"));
   }
 
 }
