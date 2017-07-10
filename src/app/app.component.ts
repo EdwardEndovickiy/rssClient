@@ -10,101 +10,86 @@ import { Link } from './link';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  providers: [ FeedServiceService ]
 })
 export class AppComponent implements OnInit {
   private feedUrl: string = '';
   private feeds: any;
   private links: Link[] = [
-    {name: "habr", url: "http%3A%2F%2Ffeed.exileed.com%2Fvk%2Ffeed%2Fhabr"},
-    {name: "brickhouse", url: "http://feeds.twit.tv/brickhouse.xml"}
-  ];
+                            {name: "habr", url: "http%3A%2F%2Ffeed.exileed.com%2Fvk%2Ffeed%2Fhabr"},
+                            {name: "brickhouse", url: "http://feeds.twit.tv/brickhouse.xml"}
+                          ];
   private name: string = '';
   private url: string = '';
   private onlyNews: boolean = false;
   private lang: string;
 
-  constructor(private feedService: FeedServiceService,private translate: TranslateService) {
-
-    console.log(localStorage.getItem("feeds"));
-    console.log(localStorage.getItem('links'));
-
+  constructor(private feedService: FeedServiceService, private translate: TranslateService) {
     if (localStorage.getItem('lang')){
       this.lang = localStorage.getItem('lang')
     } else {
       this.lang = 'en'};
 
-    if (localStorage.getItem('links')){
-      let linksOld = JSON.parse(localStorage.getItem('links'));
-      console.log(linksOld);
-      // this.links = Object.assign({}, linksOld);
-    }
-
-    /*let feeds = JSON.stringify(localStorage.getItem('feeds'));*/
-
-    if (localStorage.getItem('feeds')){
-      let feedsOld = Object.assign({}, localStorage.getItem('feeds'))
-      console.log(feedsOld);
-    }
-
     translate.setDefaultLang(this.lang);
     translate.use(this.lang);
+
+    if (localStorage.getItem('links')) {
+      this.links = JSON.parse(localStorage.getItem("links"));
+    }
+
+    if (localStorage.getItem('feeds') && localStorage.getItem('feeds') != null) {
+      this.feeds = JSON.parse(localStorage.getItem("feeds"));
+    }
+
+    if (localStorage.getItem('onlyNews') && localStorage.getItem('onlyNews') != JSON.stringify(this.onlyNews) ) {
+      this.onlyNews = !this.onlyNews;
+    }
   }
 
   ngOnInit(){
-    // this.copy = Object.assign({}, this.feed);
+    if (localStorage.getItem('url') && localStorage.getItem('feeds') == 'undefined') {
+      this.feedUrl = localStorage.getItem("url");
+      this.refreshFeed();
+    }
+  }
 
+  private jsonStringify(key: string, value: any){
+    localStorage.setItem(key, JSON.stringify(value));
   }
+
   private onOnlyNews(){
-    this.onlyNews = !this.onlyNews;
+    this.onlyNews = this.feedService.onOnlyNews(this.onlyNews);
   }
+
   private langChoose(){
     this.lang == 'en' ? this.lang = 'ru' : this.lang = 'en';
     this.translate.use(this.lang);
     localStorage.setItem('lang', this.lang);
   }
+
   private countFeed() {
-    let count: number = 0;
-    for (let index in this.feeds){
-      !this.feeds[index].view ? count++ : count;
-    }
-    return count;
-  }
-
-  private countLink(){
-    let countLink: number = this.links.length;
-
-    return countLink;
+    return this.feedService.countFeed(this.feeds);
   }
 
   private countAuthors(){
-    let count: number = 0;
-    if (this.feeds){
-      count = 1;
-      for (let feedI of this.feeds){
-        for (let feedJ of this.feeds){
-          feedI.author != feedJ.author ? count++ : count;
-        }
-      }
-    }
-    return count;
+    return this.feedService.countAuthors(this.feeds);
   }
 
   private viewStat(){
-    let countFeed;
-    let countLink = this.countLink();
-    let countAuthor: number;
+    let countFeed: any;
     if (this.feedUrl == ''){
       countFeed = 'Not selected';
     } else {
-      countFeed = this.countFeed() + ' feeds';
+      countFeed = this.feedService.countFeed(this.feeds) + ' feeds';
     }
-    alert('On this channel '+ countFeed + '\n' + this.countAuthors() + ' authors\n\nIn total: ' + countLink + ' channel\n');
+    alert('On this channel '+ countFeed + '\n' + this.feedService.countAuthors(this.feeds) +
+          ' authors\n\nIn total: ' + this.links.length + ' channel\n');
   }
 
   private addLink(){
     this.links.push(new Link(this.name, this.url));
     this.name = this.url = '';
-    localStorage.setItem("links",JSON.stringify(this.links));
+    this.jsonStringify('links', this.links);
   }
 
   private delLink(link: any){
@@ -112,12 +97,15 @@ export class AppComponent implements OnInit {
     this.links.splice(index, 1);
     if (link.url == this.feedUrl){
       this.feedUrl = '';
+      this.jsonStringify("url", this.feedUrl);
       this.refreshFeed();
     }
+    this.jsonStringify("links", this.links);
   }
 
   private goToLink(link: string){
     this.feedUrl = link;
+    localStorage.setItem("url", link);
     this.refreshFeed();
   }
 
@@ -126,8 +114,6 @@ export class AppComponent implements OnInit {
         .subscribe(
                    feed => this.feeds = feed.items,
                    error => console.log(error));
-    localStorage.setItem("feeds", JSON.stringify(this.feeds));
-    console.log(localStorage.getItem("feeds"));
-  }
 
+  }
 }

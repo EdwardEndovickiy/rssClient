@@ -8,8 +8,9 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class FeedCardComponent implements OnInit {
     @Input() feed: any;
+    @Input() feeds: any;
     @Input() onlyNews: boolean;
-    @Input() lang: string = 'en';
+    @Input() lang: string;
 
     private copy = [];
     private watchOnlyNew: boolean = true;
@@ -58,24 +59,24 @@ export class FeedCardComponent implements OnInit {
       responsive: true,
       maintainAspectRatio: false
     };
-    constructor(private translate: TranslateService) {
-        translate.setDefaultLang(this.lang);
-        translate.use(this.lang);
-      }
+
+    constructor(private translate: TranslateService) {}
 
     ngOnInit() {
+        this.translate.setDefaultLang(this.lang);
+        this.translate.use(this.lang);
     }
 
     viewFeed(feed: any){
-        /*this.copy = Object.assign({}, this.feed);
-        console.log(this.copy);*/
         feed.view = true;
+        localStorage.setItem('feeds', JSON.stringify(this.feeds));
         feed.more = !feed.more;
         let datasets = this.data.datasets;
 
         for (let dataset of datasets){
             dataset.data = [];
         }
+
         this.countChar(feed.description);
     }
     viewFeedOriginal(feed: any){

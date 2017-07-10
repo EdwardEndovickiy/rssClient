@@ -29,10 +29,10 @@
 <md-tab-group class="group">
 
   <md-tab label="{{ 'Feeds' | translate }}">
-    <md-card *ngIf="feedUrl == ''">
+    <md-card *ngIf="feeds == null">
       <md-card-title>{{ 'Choose' | translate }}</md-card-title>
     </md-card>
-    <app-feed-card *ngFor="let feed of feeds" [feed]="feed" [onlyNews]="onlyNews" [(lang)]="lang"></app-feed-card>
+    <app-feed-card *ngFor="let feed of feeds" [feeds]="feeds" [feed]="feed" [onlyNews]="onlyNews" [(lang)]="lang"></app-feed-card>
   </md-tab>
 
   <md-tab label="{{ 'Settings' | translate }}">
